@@ -1,0 +1,67 @@
+# Multi-Agent AI Systems
+
+## Overview
+
+A multi-agent system (MAS) consists of multiple autonomous agents that interact with each other 
+and their environment to achieve individual or collective goals. In the context of AI and LLMs, 
+multi-agent systems involve multiple specialized AI models working together in a coordinated pipeline.
+
+## Agent Specialization
+
+Each agent in a multi-agent system is designed to excel at a specific task:
+
+- **Planner Agent**: Decomposes complex tasks into smaller sub-tasks
+- **Researcher Agent**: Retrieves and summarizes relevant information
+- **Critic Agent**: Evaluates outputs for quality and accuracy
+- **Executor Agent**: Takes actions based on plans (API calls, code execution)
+- **Verifier Agent**: Checks if goals have been achieved
+
+## Agent Communication Patterns
+
+### Sequential (Pipeline)
+Agents work in a fixed order, each passing results to the next. Simple and predictable.
+Used in RAG pipelines: Query → Retrieve → Filter → Generate → Check.
+
+### Hierarchical
+A supervisor agent coordinates multiple sub-agents. The supervisor decides which agent 
+to invoke and in what order.
+
+### Collaborative
+Agents work in parallel on different aspects of a problem and merge results.
+
+### Debate/Adversarial
+Multiple agents argue different positions and the final answer emerges from the debate.
+Used for fact-checking and reducing bias.
+
+## LangGraph for Multi-Agent Systems
+
+LangGraph extends LangChain to support stateful, multi-agent workflows. Key concepts:
+
+- **State**: A shared data structure that all agents can read and modify
+- **Nodes**: Individual agents or functions in the graph
+- **Edges**: Connections between nodes (can be conditional)
+- **Conditional Edges**: Route execution based on state (e.g., retry on failure)
+
+LangGraph supports cycles, which is essential for retry loops and iterative refinement.
+
+## Benefits of Multi-Agent RAG
+
+1. **Higher accuracy**: Specialized agents each catch different types of errors
+2. **Hallucination resistance**: Verification agents check every output
+3. **Transparency**: Each agent's output is logged separately
+4. **Modularity**: Individual agents can be upgraded or replaced independently
+5. **Scalability**: Agents can run in parallel for speed
+
+## Frameworks for Multi-Agent Development
+
+- **LangGraph**: Stateful graph-based multi-agent framework by LangChain
+- **AutoGen**: Microsoft's framework for multi-agent conversations
+- **CrewAI**: Role-based multi-agent orchestration
+- **AgentLite**: Lightweight multi-agent framework for research
+
+## Challenges
+
+- **Latency**: Multiple LLM calls increase response time
+- **Cost**: More API calls means higher costs
+- **Error propagation**: Mistakes in early agents affect downstream agents
+- **Coordination overhead**: Agents must communicate effectively

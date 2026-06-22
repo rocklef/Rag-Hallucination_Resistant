@@ -1,0 +1,40 @@
+# What is Retrieval-Augmented Generation (RAG)?
+
+Retrieval-Augmented Generation (RAG) is a hybrid AI technique that combines information retrieval 
+with large language model (LLM) generation. Instead of relying solely on a model's parametric 
+knowledge (baked in during training), RAG retrieves relevant documents from an external knowledge 
+base at inference time and uses them as context for generating answers.
+
+## How RAG Works
+
+1. **Document Ingestion**: Documents are split into chunks and embedded into a vector store
+2. **Query Embedding**: The user's query is converted to a vector representation
+3. **Semantic Search**: The top-K most similar document chunks are retrieved
+4. **Augmented Generation**: The LLM generates an answer conditioned on the retrieved chunks
+
+## Why RAG Reduces Hallucination
+
+Large language models are known to "hallucinate" — generating confident-sounding but factually 
+incorrect information. RAG addresses this by:
+
+- **Grounding**: The model generates answers from provided evidence, not memorized patterns
+- **Verifiability**: Answers can be traced back to source documents
+- **Freshness**: External knowledge bases can be updated without retraining the model
+- **Attribution**: Sources can be cited alongside answers
+
+## Key Components
+
+- **Embedding Model**: Converts text to high-dimensional vectors (e.g., sentence-transformers)
+- **Vector Database**: Stores and indexes embeddings for fast similarity search (FAISS, ChromaDB, Pinecone)
+- **LLM**: Generates the final response using retrieved context (GPT-4, Llama, Mistral)
+- **Retriever**: Fetches top-K relevant chunks based on query similarity
+
+## Limitations of Basic RAG
+
+Standard RAG systems still have limitations:
+- Poor query formulation leads to missed relevant documents
+- Retrieved chunks may be irrelevant or contradictory
+- The LLM may ignore context and generate from parametric memory anyway
+- No mechanism to verify the generated answer against retrieved documents
+
+These limitations motivate the need for Multi-Agent RAG systems with hallucination resistance.

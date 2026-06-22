@@ -1,0 +1,76 @@
+# LLM Hallucination: Causes, Detection, and Mitigation
+
+## What is LLM Hallucination?
+
+LLM hallucination refers to the phenomenon where large language models generate information that 
+is factually incorrect, fabricated, or not supported by any reliable source. The term is borrowed 
+from psychology, where hallucination means perceiving something that does not exist.
+
+## Types of Hallucination
+
+### Factual Hallucination
+The model generates incorrect facts. Example: stating that Albert Einstein was born in 1880 
+(he was born in 1879) or attributing a quote to the wrong person.
+
+### Faithfulness Hallucination
+In RAG and summarization tasks, the model generates content that contradicts or is not supported 
+by the provided source documents. This is particularly dangerous in enterprise applications.
+
+### Intrinsic Hallucination
+The generated content contradicts the input context itself. This occurs when the model 
+ignores parts of the provided text.
+
+### Extrinsic Hallucination
+The generated content cannot be verified from the input context — the model adds information 
+not present in any source.
+
+## Root Causes of Hallucination
+
+1. **Training Data Issues**: Noisy, conflicting, or incorrect data in pre-training corpus
+2. **Knowledge Gaps**: Questions about topics underrepresented in training data
+3. **Over-confidence**: Models are trained to always provide an answer rather than say "I don't know"
+4. **Prompt Sensitivity**: Ambiguous or leading prompts can trigger hallucinations
+5. **Long Context Degradation**: Models lose focus in very long contexts
+6. **Out-of-Distribution Queries**: Queries about events after the training cutoff date
+
+## Detection Methods
+
+### Natural Language Inference (NLI)
+NLI models check if a hypothesis (answer) is entailed by a premise (context). High-quality 
+NLI models like DeBERTa-v3 can reliably detect when claims in an answer are not supported 
+by retrieved documents.
+
+### SelfCheckGPT
+Generate multiple answers to the same question with high temperature. If the answers 
+contradict each other, hallucination is likely.
+
+### Semantic Similarity Scoring
+Compare answer sentences against context chunks using cosine similarity. Low similarity 
+scores indicate potential hallucination.
+
+### Fact Checking with Knowledge Graphs
+Cross-reference generated facts against structured knowledge bases like Wikidata.
+
+## Mitigation Strategies
+
+### Prompt Engineering
+- Chain-of-thought prompting ("Let's think step by step")
+- Explicit instructions to say "I don't know" when uncertain
+- Providing structured output formats that require citing sources
+
+### RAG (Retrieval-Augmented Generation)
+Ground model outputs in retrieved documents to reduce reliance on parametric memory.
+
+### Constitutional AI
+Train models to follow specific rules and verify their own outputs.
+
+### Multi-Agent Verification
+Use multiple independent agents to cross-check each other's outputs before delivering 
+the final answer to the user.
+
+## Metrics for Evaluating Hallucination
+
+- **ROUGE scores**: Measure overlap between generated text and reference text
+- **BERTScore**: Semantic similarity between generation and reference
+- **FactScore**: Proportion of atomic facts that are supported by knowledge base
+- **HaluEval**: Benchmark specifically designed for hallucination evaluation
